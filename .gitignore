@@ -1,0 +1,7 @@
+data/*
+devkit/bin/*
+devkit/models/*
+devkit/templatelists/*
+models/*
+
+.idea
