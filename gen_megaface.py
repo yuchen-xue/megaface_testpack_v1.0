@@ -21,7 +21,7 @@ from mxnet import ndarray as nd
 
 
 def read_img(image_path):
-  img = cv2.imread(image_path, cv2.CV_LOAD_IMAGE_COLOR)
+  img = cv2.imread(image_path, cv2.IMREAD_COLOR)
   return img
 
 def get_feature(imgs, nets):
@@ -73,8 +73,8 @@ def get_and_write(buffer, nets):
 def main(args):
 
   print(args)
-  gpuid = args.gpu
-  ctx = mx.gpu(gpuid)
+  gpuids = args.gpu
+  ctx = [mx.gpu(gpuid) for gpuid in gpuids]
   nets = []
   image_shape = [int(x) for x in args.image_size.split(',')]
   for model in args.model.split('|'):
@@ -89,7 +89,7 @@ def main(args):
     all_layers = net.sym.get_internals()
     net.sym = all_layers['fc1_output']
     net.model = mx.mod.Module(symbol=net.sym, context=net.ctx, label_names = None)
-    net.model.bind(data_shapes=[('data', (1, 3, image_shape[1], image_shape[2]))])
+    net.model.bind(data_shapes=[('data', (len(gpuids), 3, image_shape[1], image_shape[2]))])
     net.model.set_params(net.arg_params, net.aux_params)
     nets.append(net)
 
@@ -161,10 +161,10 @@ def main(args):
 
 def parse_arguments(argv):
   parser = argparse.ArgumentParser()
-  
+
   parser.add_argument('--batch_size', type=int, help='', default=8)
   parser.add_argument('--image_size', type=str, help='', default='3,112,112')
-  parser.add_argument('--gpu', type=int, help='', default=0)
+  parser.add_argument('--gpu', type=int, nargs='+', help='', default=0)
   parser.add_argument('--algo', type=str, help='', default='insightface')
   parser.add_argument('--facescrub-lst', type=str, help='', default='./data/facescrub_lst')
   parser.add_argument('--megaface-lst', type=str, help='', default='./data/megaface_lst')

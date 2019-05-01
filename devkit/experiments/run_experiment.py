@@ -9,11 +9,11 @@ import json
 import random
 import subprocess
 
-MODEL = os.path.join('..', 'models', 'jb_identity.bin')
-IDENTIFICATION_EXE = os.path.join('..', 'bin', 'Identification')
-FUSE_RESULTS_EXE = os.path.join('..', 'bin', 'FuseResults')
-MEGAFACE_LIST_BASENAME = os.path.join('..','templatelists','megaface_features_list.json')
-PROBE_LIST_BASENAME = os.path.join('..','templatelists','facescrub_features_list.json')
+MODEL = os.path.join('devkit', 'models', 'jb_identity.bin')
+IDENTIFICATION_EXE = os.path.join('devkit', 'bin', 'Identification')
+FUSE_RESULTS_EXE = os.path.join('devkit', 'bin', 'FuseResults')
+MEGAFACE_LIST_BASENAME = os.path.join('devkit', 'templatelists','megaface_features_list.json')
+PROBE_LIST_BASENAME = os.path.join('devkit','templatelists','facescrub_features_list.json')
 
 def main():
     parser = argparse.ArgumentParser(description=
@@ -70,10 +70,10 @@ def main():
                 for i in range(len(path_list)):
                     path_list[i] = os.path.join(distractor_feature_path,path_list[i] + file_ending)
                     if(not os.path.isfile(path_list[i])):
-                        print path_list[i] + " is missing"
+                        print(path_list[i] + " is missing")
                         missing = True
                     if (i % 10000 == 0 and i > 0):
-                        print str(i) + " / " + str(len(path_list))
+                        print(str(i) + " / " + str(len(path_list)))
                 featureFile["path"] = path_list
                 json.dump(featureFile, open(os.path.join(
                     other_out_root, '{}_features_{}_{}_{}'.format(distractor_name,alg_name,size,index)), 'w'), sort_keys=True, indent=4)
@@ -87,7 +87,7 @@ def main():
         for i in range(len(path_list)):
             path_list[i] = os.path.join(probe_feature_path,path_list[i] + file_ending)
             if(not os.path.isfile(path_list[i])):
-                print path_list[i] + " is missing"
+                print(path_list[i] + " is missing")
                 missing = True
         featureFile["path"] = path_list
         json.dump(featureFile, open(os.path.join(
