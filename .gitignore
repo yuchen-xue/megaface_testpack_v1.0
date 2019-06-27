@@ -1,8 +1,8 @@
-data/*
-devkit/bin/*
-devkit/models/*
-devkit/templatelists/*
-models/*
+data
+feature-out
+mx_results
+models
+devkit
 
-.idea
+.vscode
 Pipfile*
