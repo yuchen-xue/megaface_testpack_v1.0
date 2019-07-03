@@ -34,6 +34,16 @@ def load_bin(path, fill = 0.0):
   #print(np.linalg.norm(feature))
   return feature
 
+def load_np(path, fill = 0.0):
+  feature = np.load(path)
+  feature = np.append(feature, np.array([fill], dtype=np.float32))
+  return feature
+
+def load_mat(path, fill = 0.0):
+  feature = sio.loadmat(path)['feature']
+  feature = np.append(feature, np.array([fill], dtype=np.float32))
+  return feature
+
 def write_bin(path, feature):
   feature = list(feature)
   with open(path, 'wb') as f:

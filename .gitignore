@@ -3,6 +3,7 @@ feature-out
 mx_results
 models
 devkit
+log
 
 .vscode
 Pipfile*
